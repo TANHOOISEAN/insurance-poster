@@ -1859,14 +1859,15 @@
             // Add default option with translated text
             const defaultOpt = document.createElement('option');
             defaultOpt.value = '';
-            const planTypeLabel = cardInfo.type === 'Plan-based' ?
-                t('form.selectPlan') :
-                t('form.selectRoom');
-            defaultOpt.textContent = '-- ' + (planTypeLabel || (cardInfo.type === 'Plan-based' ? '选择计划' : '房间等级')) + ' --';
+            const planTypeLabel = cardInfo.type === 'Plan-based' ? t('select.selectPlan') : '';
+            const fallbackLabel = cardInfo.type === 'Plan-based' ?
+                (currentLanguage === 'en' ? '-- Select Plan --' : currentLanguage === 'bm' ? '-- Pilih Pelan --' : currentLanguage === 'th' ? '-- เลือกแผน --' : '-- 选择保险计划 --') :
+                (currentLanguage === 'en' ? '-- Select Room Level --' : currentLanguage === 'bm' ? '-- Pilih Tingkat Bilik --' : currentLanguage === 'th' ? '-- เลือกระดับห้อง --' : '-- 选择房间等级 --');
+            defaultOpt.textContent = planTypeLabel || fallbackLabel;
             planLevelSelect.appendChild(defaultOpt);
 
             // Update label with translated text
-            const labelText = cardInfo.type === 'Plan-based' ? t('form.section3_planLevel') : '房间费用等级';
+            const labelText = t('form.section3_planLevel');
             planLevelLabel.textContent = labelText;
 
             // Add all options

@@ -717,11 +717,11 @@
                 <div class="two-column">
                     <div class="form-group">
                         <label data-i18n="form.section6_insured">被保人保障至</label>
-                        <input type="text" id="input15" value="100 岁" oninput="updatePreview()">
+                        <input type="text" id="input15" value="100" oninput="updatePreview()">
                     </div>
                     <div class="form-group">
                         <label data-i18n="form.section6_payor">付款人保障至</label>
-                        <input type="text" id="input16" value="25 岁" oninput="updatePreview()">
+                        <input type="text" id="input16" value="25" oninput="updatePreview()">
                     </div>
                 </div>
             </div>
@@ -1802,14 +1802,23 @@
             if (year20) year20.textContent = '20' + yearSuffix;
             if (year30) year30.textContent = '30' + yearSuffix;
 
-            // Update age/covered-until labels (100 岁, 25 岁)
+            // Update age/covered-until labels (with language-specific units)
             const ageSuffix = currentLanguage === 'en' ? ' years old' :
                               currentLanguage === 'bm' ? ' tahun' :
                               currentLanguage === 'th' ? ' ปี' : '岁';
             const val15 = document.getElementById('val15');
             const val16 = document.getElementById('val16');
-            if (val15 && val15.textContent === '100') val15.textContent = '100' + ageSuffix;
-            if (val16 && val16.textContent === '25') val16.textContent = '25' + ageSuffix;
+            const input15 = document.getElementById('input15');
+            const input16 = document.getElementById('input16');
+
+            if (val15 && input15) {
+                const ageNum = input15.value || '100';
+                val15.textContent = ageNum + ' ' + ageSuffix;
+            }
+            if (val16 && input16) {
+                const ageNum = input16.value || '25';
+                val16.textContent = ageNum + ' ' + ageSuffix;
+            }
 
             console.log('✅ Translations applied for language:', currentLanguage);
         }
@@ -2010,6 +2019,15 @@
                         const cardType = document.getElementById('cardType').value;
                         const cardInfo = medicalCardsInfo[cardType];
                         valueElement.textContent = cardInfo.annualLimit;
+                        continue;
+                    }
+
+                    // Special handling for val15, val16 (age with language-specific units)
+                    if (i === 15 || i === 16) {
+                        const ageSuffix = currentLanguage === 'en' ? ' years old' :
+                                          currentLanguage === 'bm' ? ' tahun' :
+                                          currentLanguage === 'th' ? ' ปี' : '岁';
+                        valueElement.textContent = inputElement.value + ' ' + ageSuffix;
                         continue;
                     }
 

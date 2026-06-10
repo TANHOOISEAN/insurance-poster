@@ -1787,6 +1787,10 @@
                 }
             });
 
+            // Update dynamic content when language changes
+            updatePlanOptions();
+            updateMedicalCardInfo();
+
             console.log('✅ Translations applied for language:', currentLanguage);
         }
 
@@ -1852,14 +1856,18 @@
             // Clear existing options except first one
             planLevelSelect.innerHTML = '';
 
-            // Add default option
+            // Add default option with translated text
             const defaultOpt = document.createElement('option');
             defaultOpt.value = '';
-            defaultOpt.textContent = '-- 选择' + (cardInfo.type === 'Plan-based' ? '计划' : '房间等级') + ' --';
+            const planTypeLabel = cardInfo.type === 'Plan-based' ?
+                t('form.selectPlan') :
+                t('form.selectRoom');
+            defaultOpt.textContent = '-- ' + (planTypeLabel || (cardInfo.type === 'Plan-based' ? '选择计划' : '房间等级')) + ' --';
             planLevelSelect.appendChild(defaultOpt);
 
-            // Update label
-            planLevelLabel.textContent = cardInfo.type === 'Plan-based' ? '计划选择 (Plan Selection)' : '房间费用等级 (Room Level)';
+            // Update label with translated text
+            const labelText = cardInfo.type === 'Plan-based' ? t('form.section3_planLevel') : '房间费用等级';
+            planLevelLabel.textContent = labelText;
 
             // Add all options
             cardInfo.options.forEach(option => {
@@ -1876,25 +1884,46 @@
             const selectedCard = document.getElementById('cardType').value;
             const cardInfo = medicalCardsInfo[selectedCard];
 
+            const labels = {
+                name: currentLanguage === 'en' ? 'Card Name' :
+                       currentLanguage === 'bm' ? 'Nama Kad' :
+                       currentLanguage === 'th' ? 'ชื่อบัตร' : '医药卡名称',
+                type: currentLanguage === 'en' ? 'Type' :
+                      currentLanguage === 'bm' ? 'Jenis' :
+                      currentLanguage === 'th' ? 'ประเภท' : '类型',
+                plans: currentLanguage === 'en' ? 'Plan Options' :
+                       currentLanguage === 'bm' ? 'Pilihan Pelan' :
+                       currentLanguage === 'th' ? 'ตัวเลือกแผน' : '计划选项',
+                roomBoard: currentLanguage === 'en' ? 'Room & Board' :
+                           currentLanguage === 'bm' ? 'Bilik & Makan' :
+                           currentLanguage === 'th' ? 'ค่าห้องและค่าอาหาร' : '病房膳食',
+                annualLimit: currentLanguage === 'en' ? 'Annual Limit' :
+                             currentLanguage === 'bm' ? 'Had Tahunan' :
+                             currentLanguage === 'th' ? 'วงเงินประจำปี' : '年度限额',
+                lifetimeLimit: currentLanguage === 'en' ? 'Lifetime Limit' :
+                               currentLanguage === 'bm' ? 'Had Seumur Hidup' :
+                               currentLanguage === 'th' ? 'วงเงินตลอดชีพ' : '终身限额'
+            };
+
             let html = `
                 <div style="padding: 0; margin: 0;">
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">医药卡名称:</strong> ${cardInfo.name}
+                        <strong style="color: #F59E0B;">${labels.name}:</strong> ${cardInfo.name}
                     </div>
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">类型:</strong> ${cardInfo.type}
+                        <strong style="color: #F59E0B;">${labels.type}:</strong> ${cardInfo.type}
                     </div>
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">计划选项:</strong> ${cardInfo.plans}
+                        <strong style="color: #F59E0B;">${labels.plans}:</strong> ${cardInfo.plans}
                     </div>
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">病房膳食:</strong> ${cardInfo.roomBoard}
+                        <strong style="color: #F59E0B;">${labels.roomBoard}:</strong> ${cardInfo.roomBoard}
                     </div>
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">年度限额:</strong> ${cardInfo.annualLimit}
+                        <strong style="color: #F59E0B;">${labels.annualLimit}:</strong> ${cardInfo.annualLimit}
                     </div>
                     <div style="margin-bottom: 8px;">
-                        <strong style="color: #F59E0B;">终身限额:</strong> ${cardInfo.lifetimeLimit}
+                        <strong style="color: #F59E0B;">${labels.lifetimeLimit}:</strong> ${cardInfo.lifetimeLimit}
                     </div>
                     <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #FCD34D; font-size: 11px; color: #B45309;">
                         ${cardInfo.description}
@@ -1941,11 +1970,11 @@
                     if (i === 3) {
                         const input3Value = document.getElementById('input3').value;
                         const ciDescriptions = {
-                            'CIBR': 'CIBR (50种严重疾病, 一次性赔偿, 会扣除人寿)',
-                            'CIPR': 'CIPR (50种严重疾病, 一次性赔偿, 不会扣除人寿)',
-                            'SMCC': 'SMCC (188种 中期、晚期疾病, 多次性赔偿, 不会扣除人寿)'
+                            'CIBR': t('coverage.cibr'),
+                            'CIPR': t('coverage.cipr'),
+                            'SMCC': t('coverage.smcc')
                         };
-                        valueElement.textContent = ciDescriptions[input3Value] || 'CIPR (50种)';
+                        valueElement.textContent = ciDescriptions[input3Value] || t('coverage.cipr');
                         continue;
                     }
 

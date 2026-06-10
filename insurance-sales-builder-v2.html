@@ -946,11 +946,11 @@
                             <div class="two-column-box">
                                 <div class="benefit-box">
                                     <div class="benefit-box-label" data-i18n="poster.insured">被保人</div>
-                                    <div class="benefit-box-value" id="val15">100 岁</div>
+                                    <div class="benefit-box-value" id="val15">100</div>
                                 </div>
                                 <div class="benefit-box">
                                     <div class="benefit-box-label" data-i18n="poster.payor">付款人</div>
-                                    <div class="benefit-box-value" id="val16">25 岁</div>
+                                    <div class="benefit-box-value" id="val16">25</div>
                                 </div>
                             </div>
                         </div>
@@ -968,21 +968,21 @@
                                 <div class="sub-benefit">
                                     <span class="sub-benefit-label">
                                         <span class="sub-benefit-icon">📅</span>
-                                        <span>10年</span>
+                                        <span id="year10Label">10年</span>
                                     </span>
                                     <span class="sub-benefit-value" id="val17">RM 12,350</span>
                                 </div>
                                 <div class="sub-benefit">
                                     <span class="sub-benefit-label">
                                         <span class="sub-benefit-icon">📅</span>
-                                        <span>20年</span>
+                                        <span id="year20Label">20年</span>
                                     </span>
                                     <span class="sub-benefit-value" id="val18">RM 37,539</span>
                                 </div>
                                 <div class="sub-benefit">
                                     <span class="sub-benefit-label">
                                         <span class="sub-benefit-icon">📅</span>
-                                        <span>30年</span>
+                                        <span id="year30Label">30年</span>
                                     </span>
                                     <span class="sub-benefit-value" id="val19">RM 70,233</span>
                                 </div>
@@ -1790,6 +1790,26 @@
             // Update dynamic content when language changes
             updatePlanOptions();
             updateMedicalCardInfo();
+
+            // Update year labels (10年, 20年, 30年)
+            const yearSuffix = currentLanguage === 'en' ? ' years' :
+                               currentLanguage === 'bm' ? ' tahun' :
+                               currentLanguage === 'th' ? ' ปี' : '年';
+            const year10 = document.getElementById('year10Label');
+            const year20 = document.getElementById('year20Label');
+            const year30 = document.getElementById('year30Label');
+            if (year10) year10.textContent = '10' + yearSuffix;
+            if (year20) year20.textContent = '20' + yearSuffix;
+            if (year30) year30.textContent = '30' + yearSuffix;
+
+            // Update age/covered-until labels (100 岁, 25 岁)
+            const ageSuffix = currentLanguage === 'en' ? ' years old' :
+                              currentLanguage === 'bm' ? ' tahun' :
+                              currentLanguage === 'th' ? ' ปี' : '岁';
+            const val15 = document.getElementById('val15');
+            const val16 = document.getElementById('val16');
+            if (val15 && val15.textContent === '100') val15.textContent = '100' + ageSuffix;
+            if (val16 && val16.textContent === '25') val16.textContent = '25' + ageSuffix;
 
             console.log('✅ Translations applied for language:', currentLanguage);
         }

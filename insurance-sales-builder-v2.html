@@ -1940,8 +1940,14 @@
             const cardType = document.getElementById('cardType').value;
             document.getElementById('posterClientName').textContent = document.getElementById('clientName').value;
             document.getElementById('posterAge').textContent = document.getElementById('age').value;
-            document.getElementById('posterGender').textContent = document.getElementById('gender').value;
-            document.getElementById('posterSmoking').textContent = document.getElementById('smoking').value;
+            // Show translated text for gender select (use textContent not value)
+            const genderSelect = document.getElementById('gender');
+            const genderOption = genderSelect.options[genderSelect.selectedIndex];
+            document.getElementById('posterGender').textContent = genderOption.textContent || genderSelect.value;
+            // Show translated text for smoking select (use textContent not value)
+            const smokingSelect = document.getElementById('smoking');
+            const smokingOption = smokingSelect.options[smokingSelect.selectedIndex];
+            document.getElementById('posterSmoking').textContent = smokingOption.textContent || smokingSelect.value;
             document.getElementById('posterJobGrade').textContent = document.getElementById('jobGrade').value;
             document.getElementById('posterPremium').textContent = document.getElementById('premium').value;
 

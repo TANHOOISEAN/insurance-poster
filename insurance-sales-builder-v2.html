@@ -1707,6 +1707,9 @@
                     } else {
                         element.textContent = text;
                     }
+                } else if (element.tagName === 'LABEL' || element.tagName === 'DIV' || element.tagName === 'SPAN') {
+                    // For label, div, span elements - always update textContent
+                    element.textContent = text;
                 } else {
                     element.textContent = text;
                 }
